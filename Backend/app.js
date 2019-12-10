@@ -12,6 +12,7 @@ var request = require('request'); // "Request" library
 var cors = require('cors');
 var querystring = require('querystring');
 var cookieParser = require('cookie-parser');
+const api_helper = require('./api_Helper');
 
 var client_id = '61c7611fd57e442f9486d0fef89d0fc6'; // Your client id
 var client_secret = '2c097dc4fea84435b240ec4a590fa27d'; // Your secret
@@ -142,6 +143,43 @@ app.get('/refresh_token', function(req, res) {
     }
   });
 });
+app.get('/search',function(req,res){
+  var accessToken='BQA2SBmDbICd6k9M7a24ANNOAKzB1Og4pr1qnEGyh4DhISfHI2CYRX63WUVzY8T0ad20VyVEacPi-HMvXwhf1xrc4Nmgl0b5unmgTl3fWI955Vil6Ef9tJxCyJtfehTXSvOcZo2ZG-0kdPR0eB_ckmzXR2X9mODG95U'
+
+  var options = {
+    url: 'https://api.spotify.com/v1/search?q=Daft+Punk&type=artist',
+    headers: { 'Authorization': 'Bearer ' + accessToken},
+    json: true
+  };
+  request.get(options, function(error,response,body){
+    res.json(body)
+    console.log(body)
+  })
+})
+app.get('/artist', function (req, res) {
+
+  var accessToken='BQA2SBmDbICd6k9M7a24ANNOAKzB1Og4pr1qnEGyh4DhISfHI2CYRX63WUVzY8T0ad20VyVEacPi-HMvXwhf1xrc4Nmgl0b5unmgTl3fWI955Vil6Ef9tJxCyJtfehTXSvOcZo2ZG-0kdPR0eB_ckmzXR2X9mODG95U'
+  var options = {
+    url: 'https://api.spotify.com/v1/artists/0OdUWJ0sBjDrqHygGUXeCF',
+    headers: { 'Authorization': 'Bearer ' + accessToken },
+    json: true
+  };
+
+  // use the access token to access the Spotify Web API
+  request.get(options, function(error, response, body) {
+    console.log(body);
+    res.json(body)
+    // response.send(body);
+  });
+
+  // api_helper.make_API_call('https://api.spotify.com/v1/artists/0OdUWJ0sBjDrqHygGUXeCF').then(response => {
+  //   res.json(response)
+  // })
+  // .catch(error => {
+  //   res.send(error)
+  // })
+  // res.send('response artist')
+})
 
 console.log('Listening on 8888');
 app.listen(8888);
